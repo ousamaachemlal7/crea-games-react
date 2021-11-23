@@ -1,24 +1,21 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {navLinks} from '../utils/constants';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
-import logo from '../Assets/logo.jpg';
 import { Spin as Hamburger } from 'hamburger-react'
+import { SocialIcon } from 'react-social-icons';
+import {useAppContext} from '../context/app_context';
 
 
 
 const Navbar = () => {
-
-    //const [isOpen, setIsOpen] = useState(false);
-   // const toggle = () => setIsOpen(!isOpen);
+      
+    const {openSideBar} = useAppContext();
 
     return (
   
         <Wrapper>
             
-            <div className='logo'>
-                <img className='logo-app' src={logo} alt='logo application'/> 
-            </div>
             <div className='links'>
                 <ul className='links-ul'>
                     <li>
@@ -36,9 +33,14 @@ const Navbar = () => {
                 </ul>
             </div>
 
-            <div className='social'> social icons </div>
-            <Hamburger  easing="ease-in"   />
+            <div className='social'> 
+                <SocialIcon url="https://twitter.com/jaketrent" />
+                <SocialIcon url="https://linkedin.com/jaketrent" />
+                <SocialIcon url="https://facebook.com/jaketrent" />
+            </div>
+            <Hamburger  easing="ease-in"  onClick={ openSideBar} />
         </Wrapper>
+        
     )
 }
 
@@ -48,32 +50,30 @@ const Wrapper= styled.header `
     justify-content:space-between;
     align-items:center;
     width: 100%;
-
-    .logo{
-        width:10%;
-    }
-
-    .logo-app{
-        width:100%;
-
-    }
+    background-color: lightgrey;
+    z-index:-1;
+     
     .links{
-        width:70%;
+        width:40%;
     }
 
     .links-ul{
-        display:flex;
-        flex-direction:row;
-        justify-content:space-evenly;
-        align-items:center;
+        display: flex;
+	    flex-direction: row;
+        justify-content: space-around;
+	    align-items: center;
+	  
         width: 100%;
         list-style-type:none;
         
         }
 
-
     .social {
         width:15%;
+        display: flex;
+	    flex-direction: row;
+        justify-content: space-around;
+	    align-items: center;
     }
 
 `
