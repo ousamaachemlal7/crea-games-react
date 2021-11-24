@@ -72,7 +72,7 @@ const Wrapper= styled.header `
         justify-content: space-around;
         align-items: flex-start;
         align-content: stretch;
-        width: 50%;
+        width: 30%;
         list-style-type:none;
         li{
             &:hover{
