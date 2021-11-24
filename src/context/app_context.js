@@ -18,7 +18,7 @@ export const AppProvider = ({children}) => {
         
     }
     const closeSideBar = () => {
-        console.log("Open")
+        console.log("close")
         dispatch({type:SIDEBAR_CLOSE})
         
     }

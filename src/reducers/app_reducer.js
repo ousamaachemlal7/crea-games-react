@@ -4,6 +4,8 @@ import {
 } from '../actions';
 
 const reducer = (state,action) => {
+    
+
     if(action.type === SIDEBAR_OPEN){
         
         return {...state,isOpen:true};
