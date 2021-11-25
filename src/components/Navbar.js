@@ -6,34 +6,40 @@ import { Spin as Hamburger } from 'hamburger-react'
 import { SocialIcon } from 'react-social-icons';
 import {useAppContext} from '../context/app_context';
 import logo from '../Assets/gaming.png';
+import { BsFillHouseDoorFill } from "react-icons/bs";
+
+
 
 
 const Navbar = () => {
       
     const {openSideBar} = useAppContext();
-
+   
     return (
   
         <Wrapper>
-            <Hamburger  easing="ease-in"  onClick={ openSideBar} />
+            <button onClick={ openSideBar}><Hamburger  easing="ease-in"  /></button>
+            
             <div className='links'>
                 <ul className='links-ul'>                  
                     <li>
-                    <StyledLink to="/">Home</StyledLink>
+                        <BsFillHouseDoorFill/>
+                        <StyledLink to="/">Home</StyledLink>
                     </li>
                     <li>
-                    <StyledLink to="/About">About</StyledLink>
+                        <StyledLink to="/About">About</StyledLink>
                     </li>
                     <li>
-                    <StyledLink to="/Person">Person</StyledLink>
+                        <StyledLink to="/Person"> Edit characters</StyledLink>
                     </li>
                     <li>
-                    <StyledLink to="/FAQ">FAQ</StyledLink>
+                        <StyledLink to="/FAQ">FAQ</StyledLink>
                     </li>
                 </ul>
             </div>
 
             <div className='social'> 
+                <SocialIcon url="https://github.com/jaketrent" />
                 <SocialIcon url="https://twitter.com/jaketrent" />
                 <SocialIcon url="https://linkedin.com/jaketrent" />
                 <SocialIcon url="https://facebook.com/jaketrent" />
@@ -73,21 +79,26 @@ const Wrapper= styled.header `
         align-items: flex-start;
         align-content: stretch;
         width: 30%;
+        height:100%;
         list-style-type:none;
         li{
             &:hover{
                 border-top: 2px solid black;
                 border-bottom: 2px solid black;
+                background-color: var(--clr-grey-10);
+                font-family: arial;
+                font-size: 2rem;
+                text-shadow: 4px 4px 5px var(--dark-shadow);
             }
         }
 
     }
 
     .social {
-        width:15%;
+        width:10%;
         display: flex;
 	    flex-direction: row;
-        justify-content: space-evenly;
+        justify-content: space-around;
 	    align-items: center;
     }
 

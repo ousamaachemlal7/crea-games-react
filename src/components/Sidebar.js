@@ -12,7 +12,7 @@ const Sidebar = () => {
             <aside className={ `sidebar ${isOpen ? 'show-sidebar' : 'hide'} `}> 
            
                 
-                    <FaTimes onClick={closeSideBar}/>
+                    <FaTimes onClick={closeSideBar} color="red" />
                
                 <div className='links'>
                     <ul className='links-ul'>
@@ -23,7 +23,7 @@ const Sidebar = () => {
                         <StyledLink to="/About" onClick={closeSideBar} >About</StyledLink>
                         </li>
                         <li>
-                        <StyledLink to="/Person" onClick={closeSideBar} >Person</StyledLink>
+                        <StyledLink to="/Person" onClick={closeSideBar} >Edit character</StyledLink>
                         </li>
                         <li>
                         <StyledLink to="/FAQ" onClick={closeSideBar}>FAQ</StyledLink>
@@ -43,7 +43,7 @@ const Wrapper= styled.div `
     width:100%;
     height:100%;
     transition: var(--transition);
-    background-color:grey;
+    background-color:lightgrey;
     border-radius: 0 5px 5px 0;
         svg{
         color: black;
@@ -62,8 +62,9 @@ const Wrapper= styled.div `
 }
 
 .show-sidebar{
-   display:block !important;
-   z-index: 1000;
+    transition: var(--transition);
+    display:block !important;
+    z-index: 1000;
    
 }
 
@@ -84,7 +85,7 @@ const Wrapper= styled.div `
     
     }
     a:hover {
-     color: white;
+    color: white;
     background-color: black;
   
     }
@@ -96,14 +97,12 @@ const Wrapper= styled.div `
 
 
 const StyledLink = styled(Link)`
-  color: black;
-  font-weight: bold;
-  text-decoration:none;
-font-size: 3rem;
-transition: var(--transition);
+    color: black;
+    font-weight: bold;
+    text-decoration:none;
+    font-size: 3rem;
+    transition: var(--transition);
         
-
-  
   `;
 
 export default Sidebar;
