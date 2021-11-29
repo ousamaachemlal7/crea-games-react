@@ -58,6 +58,7 @@ const Wrapper= styled.div `
 }
 
 .hide{
+    transition: var(--transition);
     display:none !important;
 }
 

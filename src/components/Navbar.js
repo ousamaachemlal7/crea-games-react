@@ -5,7 +5,6 @@ import {Link} from 'react-router-dom';
 import { Spin as Hamburger } from 'hamburger-react'
 import { SocialIcon } from 'react-social-icons';
 import {useAppContext} from '../context/app_context';
-import logo from '../Assets/gaming.png';
 import { BsFillHouseDoorFill } from "react-icons/bs";
 
 
