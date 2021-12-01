@@ -10,20 +10,118 @@ import { FcPlus } from "react-icons/fc";
 import { AiFillMinusCircle } from "react-icons/ai";
 import { GiBrain,GiMuscleUp } from "react-icons/gi";
 import Button from '@mui/material/Button';
+import axios from 'axios';
 
 export class Person extends Component{
         state = {
-                    person:{image:1,speed:0,strength:0,intelligence:0,weapon:''},
+                    person:{image:1,name:'',speed:0,strength:0,intelligence:0,weapon:''},
                     points:15,
-                    name:''
+                    loading:false,
+                    message:''
+                    
                 };
         
-        
+
+        resete = () =>{
+                    
+            this.setState(
+                      {
+                        person:{image:1,speed:0,strength:0,intelligence:0,weapon:''},
+                        points:15,
+                        name:''
+                      }
+                    );
+                }
+        handleChange = (e) => {
+            this.setState(old => {
+                const newPerson = {...old.person};
+                let newWeapon = e.target.value;
+                newPerson.weapon = newWeapon;
+            return {person:newPerson, weapon:newWeapon} 
+            }); 
+            console.log(this.state)
+        }
+
+        handleTest = (e) => {
+
+
+            this.setState(old => {
+                const newPerson = {...old.person};
+                let newName = e.target.value;
+                newPerson.name = newName;
+            return {person:newPerson, name:newName} 
+            }); 
+       
+          
+        }
+
+        componentDidMount(){
+
+            axios.get('https://gamingtest-196df-default-rtdb.firebaseio.com/person.json')
+            .then(response => {
+
+
+                 const data = Object.values(response.data);
+                 console.log(data)
+            })
+            .catch(error => {
+
+
+            })
+        }
+
+     
+     
+        handleCreate = () => {
+
+            let images = '';
+
+            if(this.state.person.image === 1)
+            {
+                images = image1;
+            }
+
+            else if(this.state.person.image === 2){
+                images = image2;
+            }
+            else {
+
+                images = image3;
+            }
+
+           const player = {
+
+               person:{
+
+                       image:images,
+                       speed:this.state.person.speed,
+                       strength:this.state.person.strength,
+                       intelligence:this.state.person.intelligence,
+               },
+
+               name:this.state.person.name
+           }
+
+
+             this.setState({loading:true})
+           axios.post('https://gamingtest-196df-default-rtdb.firebaseio.com/person.json',player)
+           .then(response => {
+                this.setState({loading:false})
+                this.setState({message:"character created"})
+
+              
+           })
+           .catch(error => {
+
+
+           })
+        }
+
+    
+    
         
         render() {
-            const resete= () =>{
-
-            }
+            
 
             const emproveCharacter = (emprovement) => {
                 const newPerson = {...this.state.person}
@@ -110,6 +208,7 @@ export class Person extends Component{
                             }
                             break;    
                 }
+                console.log(this.state)
             }
             return (
                 <>
@@ -118,26 +217,33 @@ export class Person extends Component{
                         <StyledDiv className="container-character">
                             <Carousel className="carousel" >
                                 <div className="image">
-                                    <img src={image1} alt='avatar 1' />
-                                    <p className="legend">Legend 1</p>
+                                        <img src={image1} alt='avatar 1' />
+                                        <p className="legend">
+                                         <input type="text" value={this.state.person.name} placeholder='insert player name' onChange={this.handleTest}/> 
+                                        </p>
+                                        {/* <input type='hidden' value={this.state.person.name} onChange={()=> this.setState({name:'legend1'})} /> */}
                                 </div>
                                 <div className="image">
                                     <img src={image2} alt='avatar 2' />
-                                    <p className="legend">Legend 2</p>
+                                    <p className="legend">
+                                    <input type="text" value={this.state.person.name} placeholder='insert player name' onChange={this.handleTest}/> 
+                                    </p>
                                 </div> 
                                 <div className="image">
                                     <img src={image3} alt='avatar 3'  />
-                                    <p className="legend">Legend 3</p>
+                                    <p className="legend">
+                                    <input type="text" value={this.state.person.name} placeholder='insert player name' onChange={this.handleTest}/> 
+                                    </p>
                                 </div>
                             </Carousel>
 
                             <h2>Select a weapon</h2>
-                            <select>
+                            <select onChange =  {this.handleChange}>
                                 
-                                <option value="A">Axe</option>
-                                <option value="B">Sword</option>
-                                <option value="C">Fleau</option>
-                                <option value="D">Arche</option>
+                                <option value="Axe">Axe</option>
+                                <option value="Sword">Sword</option>
+                                <option value="Fleau">Fleau</option>
+                                <option value="Arche">Arche</option>
                             </select>
 
                             <StyledDivPoints className="container-points">
@@ -167,9 +273,19 @@ export class Person extends Component{
                             </StyledDivPoints>
                         </StyledDiv>
 
+
+                        {
+                            this.state.loading && <div> <h1> data is loading </h1> </div>
+                        }
+
+                        {
+                            this.state.message && <div> <h1> {this.state.message} </h1></div>
+
+                        }
+
                         <div className="create-reset-character">
-                            <Button variant="contained" color="success">Create</Button>
-                            <Button variant="outlined" color="error" onClick={()=> resete()}>Reset</Button>
+                            <Button variant="contained" color="success" className="button" onClick={this.handleCreate}>Create</Button>
+                            <Button variant="outlined" color="error" className="button" onClick={this.resete}>Reset</Button>
                         </div>
                 </div>
         
@@ -248,10 +364,6 @@ const StyledDivPoints = styled.div`
         p{
             font-size: 2rem;
         }
-    }
-    .create-reset-character button{
-        width:20%;
-        height:20%;
     }
 
 `

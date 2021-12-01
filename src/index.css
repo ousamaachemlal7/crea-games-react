@@ -104,3 +104,18 @@ video{
   margin-bottom: 5%;
   font-size: 3rem;
 }
+
+.create-reset-character{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 10%;
+  margin-bottom: 2%;
+}
+
+.button{
+  
+  width: 100%;
+  height: 100%;
+
+}
