@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+//import styled from 'styled-components';
 import Video from '../components/video';
 import logo from '../Assets/logo.mp4';
 

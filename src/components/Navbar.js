@@ -1,5 +1,4 @@
 import React from 'react';
-import {navLinks} from '../utils/constants';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 import { Spin as Hamburger } from 'hamburger-react'

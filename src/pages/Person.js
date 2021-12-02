@@ -11,19 +11,19 @@ import { AiFillMinusCircle } from "react-icons/ai";
 import { GiBrain,GiMuscleUp } from "react-icons/gi";
 import Button from '@mui/material/Button';
 import axios from 'axios';
+import PlayerCreated from '../components/PlayerCreated';
 
 export class Person extends Component{
         state = {
-                    person:{image:1,name:'',speed:0,strength:0,intelligence:0,weapon:''},
+                    person:{image:0,name:'',speed:0,strength:0,intelligence:0,weapon:''},
                     points:15,
                     loading:false,
-                    message:''
-                    
+                    message:'',
+                    data:[]
                 };
         
-
-        resete = () =>{
-                    
+            
+        resete = () =>{     
             this.setState(
                       {
                         person:{image:1,speed:0,strength:0,intelligence:0,weapon:''},
@@ -32,27 +32,35 @@ export class Person extends Component{
                       }
                     );
                 }
-        handleChange = (e) => {
+
+        handleSelectWeapon = (e) => {
             this.setState(old => {
                 const newPerson = {...old.person};
                 let newWeapon = e.target.value;
                 newPerson.weapon = newWeapon;
             return {person:newPerson, weapon:newWeapon} 
             }); 
-            console.log(this.state)
+            
         }
 
-        handleTest = (e) => {
+        getItemPosition = (index) => {
+            console.log(index)
+            this.setState(old => {
+                const newPerson = {...old.person};
+                let newPosition = index;
+                newPerson.image = newPosition;
+                console.log(newPosition);
+             return {person:newPerson, image:newPosition} 
+            });  
+        }
 
-
+        getPlayerName = (e) => {
             this.setState(old => {
                 const newPerson = {...old.person};
                 let newName = e.target.value;
                 newPerson.name = newName;
             return {person:newPerson, name:newName} 
-            }); 
-       
-          
+            });  
         }
 
         componentDidMount(){
@@ -62,7 +70,7 @@ export class Person extends Component{
 
 
                  const data = Object.values(response.data);
-                 console.log(data)
+                this.setState({data:data})
             })
             .catch(error => {
 
@@ -73,22 +81,21 @@ export class Person extends Component{
      
      
         handleCreate = () => {
-
             let images = '';
-
-            if(this.state.person.image === 1)
+            console.log(this.state.person.image)
+            if(this.state.person.image === 0)
             {
                 images = image1;
             }
 
-            else if(this.state.person.image === 2){
+            else if(this.state.person.image === 1){
                 images = image2;
             }
             else {
 
                 images = image3;
             }
-
+            console.log(images)
            const player = {
 
                person:{
@@ -208,44 +215,49 @@ export class Person extends Component{
                             }
                             break;    
                 }
-                console.log(this.state)
+                
             }
             return (
                 <>
                 <div className="container-person">
                         <h1>Create Your Own Player</h1>
+
                         <StyledDiv className="container-character">
-                            <Carousel className="carousel" >
+                        <div className="character-style">
+                        <Carousel className="carousel"showArrows={true} useKeyboardArrows showIndicators onChange={ (index) => this.getItemPosition(index) }>
                                 <div className="image">
                                         <img src={image1} alt='avatar 1' />
                                         <p className="legend">
-                                         <input type="text" value={this.state.person.name} placeholder='insert player name' onChange={this.handleTest}/> 
+                                         <input className="name-input" type="text" value={this.state.person.name} placeholder='insert player name' onChange={this.getPlayerName}/> 
                                         </p>
-                                        {/* <input type='hidden' value={this.state.person.name} onChange={()=> this.setState({name:'legend1'})} /> */}
                                 </div>
                                 <div className="image">
                                     <img src={image2} alt='avatar 2' />
                                     <p className="legend">
-                                    <input type="text" value={this.state.person.name} placeholder='insert player name' onChange={this.handleTest}/> 
+                                    <input className="name-input" type="text" value={this.state.person.name} placeholder='insert player name' onChange={this.getPlayerName}/> 
                                     </p>
                                 </div> 
                                 <div className="image">
                                     <img src={image3} alt='avatar 3'  />
                                     <p className="legend">
-                                    <input type="text" value={this.state.person.name} placeholder='insert player name' onChange={this.handleTest}/> 
+                                    <input className="name-input" type="text" value={this.state.person.name} placeholder='insert player name' onChange={this.getPlayerName}/> 
                                     </p>
                                 </div>
                             </Carousel>
+                        </div>
 
-                            <h2>Select a weapon</h2>
-                            <select onChange =  {this.handleChange}>
-                                
-                                <option value="Axe">Axe</option>
-                                <option value="Sword">Sword</option>
-                                <option value="Fleau">Fleau</option>
-                                <option value="Arche">Arche</option>
-                            </select>
+                            <div className="weapons">
+                                <h2>Select a weapon</h2>
+                                <select onChange =  {this.handleSelectWeapon}>
+                                    
+                                    <option value="Axe">Axe</option>
+                                    <option value="Sword">Sword</option>
+                                    <option value="Fleau">Fleau</option>
+                                    <option value="Arche">Arche</option>
+                                </select>
+                            </div>
 
+                            <div>
                             <StyledDivPoints className="container-points">
                                 <h2> Points left <p> :{this.state.points} </p></h2>
                                 <div className="container-speed-points">
@@ -271,6 +283,8 @@ export class Person extends Component{
                                 </div>
         
                             </StyledDivPoints>
+                            </div>
+
                         </StyledDiv>
 
 
@@ -288,7 +302,17 @@ export class Person extends Component{
                             <Button variant="outlined" color="error" className="button" onClick={this.resete}>Reset</Button>
                         </div>
                 </div>
-        
+                        {
+                            this.state.data.map(player=>{
+                                console.log(player)
+                                return(
+                                    <PlayerCreated image={player.person.image} name={player.name} strength={player.person.strength} spped={player.person.speed} intelligence={player.person.intelligence}/>
+                                )
+
+                            })
+                            
+                        }
+                    
                 </>
             )
         }
@@ -299,29 +323,68 @@ export class Person extends Component{
 
 
 const StyledDiv = styled.div `
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	align-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    align-items: center;
+    grid-column-gap: 20px;
+    grid-row-gap: 0px;
     width:100%;
     height:100%;
+
+    .character-style{
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
     .carousel{
-        width:50%;
+        width:100%;
+        height:50%;
+        padding: 0px 10px 0px 10px;
+
     }
     .carousel .slide{
         height:40vh;
     }
+    .control-arrow{
+        background-color:black;
+    }
+    .name-input{
+        width:60%;
+        height:100%;
+        border-radius: 20px;
+    }
+
+    .control-dots{
+        
+        width:100%;
+    }
     .carousel .slide img{
         max-height:100%;
-        width:auto !important;
+        width:35% !important;
     }
 
     .image{
         align-items: center;
-        margin:0 auto;
-        height:70%;
+        height:100%;
         width:100%;
+        background-color: rgba(46, 125, 50,0.8);
+    }
+    .weapons{
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width:100%;
+        gap:20px;
+        h2{
+            font-size:2rem;
+            
+        }
+    }
+    .legend{
+        background:white !important;
     }
 `
 const StyledDivPoints = styled.div`
