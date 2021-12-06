@@ -5,6 +5,19 @@ import styled from 'styled-components';
 import image1 from '../Assets/player1.png';
 import image2 from '../Assets/player2.png';
 import image3 from '../Assets/player3.png';
+import avatar1 from '../Assets/avatar1.png';
+import avatar2 from '../Assets/avatar2.png';
+import avatar3 from '../Assets/avatar3.png';
+import avatar4 from '../Assets/avatar4.png';
+import avatar5 from '../Assets/avatar5.png';
+import avatar6 from '../Assets/avatar6.png';
+import avatar7 from '../Assets/avatar7.png';
+import avatar8 from '../Assets/avatar8.png';
+import avatar9 from '../Assets/avatar9.png';
+import avatar10 from '../Assets/avatar10.png';
+import avatar11 from '../Assets/avatar11.png';
+import avatar12 from '../Assets/avatar12.png';
+
 import { BsLightningFill } from "react-icons/bs";
 import { FcPlus } from "react-icons/fc";
 import { AiFillMinusCircle } from "react-icons/ai";
@@ -21,12 +34,11 @@ export class Person extends Component{
                     message:'',
                     data:[]
                 };
-        
             
         resete = () =>{     
             this.setState(
                       {
-                        person:{image:1,speed:0,strength:0,intelligence:0,weapon:''},
+                        person:{image:0,speed:0,strength:0,intelligence:0,weapon:''},
                         points:15,
                         name:''
                       }
@@ -38,18 +50,19 @@ export class Person extends Component{
                 const newPerson = {...old.person};
                 let newWeapon = e.target.value;
                 newPerson.weapon = newWeapon;
+                console.log(newPerson.weapon);
             return {person:newPerson, weapon:newWeapon} 
             }); 
             
         }
 
         getItemPosition = (index) => {
-            console.log(index)
+            //console.log(index)
             this.setState(old => {
                 const newPerson = {...old.person};
                 let newPosition = index;
                 newPerson.image = newPosition;
-                console.log(newPosition);
+              //  console.log(newPosition);
              return {person:newPerson, image:newPosition} 
             });  
         }
@@ -77,25 +90,73 @@ export class Person extends Component{
 
             })
         }
-
-     
      
         handleCreate = () => {
             let images = '';
             console.log(this.state.person.image)
-            if(this.state.person.image === 0)
+            console.log(this.state.person.speed)
+            console.log(this.state.person.weapon)
+            if(this.state.person.image === 0 )
             {
-                images = image1;
+                console.log(this.state.person.weapon)
+                switch(this.state.person.weapon){
+                    
+                    case 'Axe':
+                        images = avatar7;
+                        break;
+                    case 'Fleau':
+                        images= avatar5;
+                        break;
+                    case 'Arche':
+                        images= avatar8;
+                        break;
+                    case 'Sword':
+                        images=avatar6;
+                        break;
+                    default:
+                        images = image1;
+                }
             }
 
-            else if(this.state.person.image === 1){
-                images = image2;
+            else if(this.state.person.image === 1)
+            {
+                switch(this.state.person.weapon){
+                    case 'Axe':
+                        images = avatar3;
+                        break;
+                    case 'Fleau':
+                        images= avatar4;
+                        break;
+                    case 'Arche':
+                        images= avatar1;
+                        break;
+                    case 'Sword':
+                        images= avatar2;
+                        break;
+                    default:
+                        images = image2;
+                }
             }
             else {
-
+                switch(this.state.person.weapon){
+                    case 'Axe':
+                        images = avatar10;
+                        break;
+                    case 'Fleau':
+                        images= avatar11;
+                        break;
+                    case 'Arche':
+                        images= avatar9;
+                        break;
+                    case 'Sword':
+                        images= avatar12;
+                        break;
+                    default:
+                        images = image2;
+                }
                 images = image3;
             }
-            console.log(images)
+            
            const player = {
 
                person:{
@@ -104,11 +165,14 @@ export class Person extends Component{
                        speed:this.state.person.speed,
                        strength:this.state.person.strength,
                        intelligence:this.state.person.intelligence,
+                       weapon:this.state.person.weapon
                },
 
                name:this.state.person.name
            }
 
+
+          
 
              this.setState({loading:true})
            axios.post('https://gamingtest-196df-default-rtdb.firebaseio.com/person.json',player)
@@ -306,7 +370,7 @@ export class Person extends Component{
                             this.state.data.map(player=>{
                                 console.log(player)
                                 return(
-                                    <PlayerCreated image={player.person.image} name={player.name} strength={player.person.strength} spped={player.person.speed} intelligence={player.person.intelligence}/>
+                                    <PlayerCreated image={player.person.image} name={player.name} strength={player.person.strength} speed={player.person.speed} intelligence={player.person.intelligence} weapon={player.person.weapon}/>
                                 )
 
                             })
